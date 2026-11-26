@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { orderRepository } from "@/lib/repositories/orderRepository";
 import RetryButton from "@/components/RetryButton";
+import WorkerButton from "@/components/WorkerButton";
 import { adminOrderListSchema } from "@/lib/validation";
 
 export default async function AdminPage({
@@ -43,6 +44,12 @@ export default async function AdminPage({
   return (
     <>
       <h1>Admin — all orders</h1>
+      <div style={{ marginBottom: 12 }}>
+        <WorkerButton />
+        <span className="muted" style={{ marginLeft: 8 }}>
+          Runs one worker pass over pending orders.
+        </span>
+      </div>
       <div className="card">
         <form method="get" className="toolbar">
           <label>

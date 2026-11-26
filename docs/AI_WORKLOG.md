@@ -139,3 +139,18 @@ any test ran.
 Times are approximate, from the session clock. The 4-hour hard cap was
 respected: nothing was started after the cap that the log does not list
 as unfinished (see README known limitations).
+
+## Live deployment (after the 4-hour build)
+
+- Deployed to Vercel (project iyrix-test) with a free Neon Postgres
+  database from the Vercel Marketplace. The build VM cannot reach Neon
+  over raw Postgres TCP (the sandbox network intercepts port 5432), so
+  migrations and the seed run at build time on Vercel instead:
+  `vercel-build` runs `prisma migrate deploy`, then `npm run db:seed`,
+  then `next build`. The seed is idempotent, so re-running it on every
+  deploy is safe.
+- Added a small "Run worker" button to the admin page. It POSTs to the
+  existing admin-only `/api/worker/run` route and shows the result
+  inline. It is only a demo affordance for the live link, where no
+  background worker process runs; the worker design itself did not
+  change.

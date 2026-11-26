@@ -41,3 +41,4 @@ next-env.d.ts
 
 # demo video (large binary, linked in README instead)
 demo/*.mp4
+.env*
