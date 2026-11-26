@@ -30,7 +30,7 @@ Microsoft mailboxes. Built as the take-home test for Iyrix Technologies
 ## Run it (under 10 minutes on a clean clone)
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/Numan-Nadeem/mailbox-order-manager.git
 cd mailbox-order-manager
 npm install
 
