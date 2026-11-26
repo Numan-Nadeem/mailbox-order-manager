@@ -1,0 +1,105 @@
+// Mailbox Order Manager — Prisma schema
+// PostgreSQL. Run `npx prisma migrate dev` after changing this file.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum Provider {
+  GOOGLE
+  MICROSOFT
+}
+
+enum OrderStatus {
+  PENDING
+  PROVISIONING
+  ACTIVE
+  FAILED
+}
+
+enum MailboxStatus {
+  PENDING
+  PROVISIONED
+  FAILED
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         Role      @default(CUSTOMER)
+  orders       Order[]
+  auditLogs    AuditLog[] @relation("AuditActor")
+  sessions     Session[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  customerId      String
+  customer        User          @relation(fields: [customerId], references: [id])
+  domain          String
+  provider        Provider
+  mailboxCount    Int
+  status          OrderStatus   @default(PENDING)
+  idempotencyKey  String        @unique
+  claimedAt       DateTime?
+  claimedBy       String?
+  mailboxes       Mailbox[]
+  auditLogs       AuditLog[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([customerId, createdAt])
+  @@index([status, createdAt])
+  @@index([status, claimedAt])
+}
+
+model Mailbox {
+  id        String        @id @default(cuid())
+  orderId   String
+  order     Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  address   String
+  status    MailboxStatus @default(PENDING)
+  error     String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([orderId])
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  orderId    String
+  order      Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  fromStatus OrderStatus?
+  toStatus   OrderStatus
+  actorId    String?
+  actor      User?       @relation("AuditActor", fields: [actorId], references: [id])
+  reason     String?
+  createdAt  DateTime    @default(now())
+
+  @@index([orderId, createdAt])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+}
