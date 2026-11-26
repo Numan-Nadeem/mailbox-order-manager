@@ -146,9 +146,12 @@ as unfinished (see README known limitations).
   database from the Vercel Marketplace. The build VM cannot reach Neon
   over raw Postgres TCP (the sandbox network intercepts port 5432), so
   migrations and the seed run at build time on Vercel instead:
-  `vercel-build` runs `prisma migrate deploy`, then `npm run db:seed`,
-  then `next build`. The seed is idempotent, so re-running it on every
-  deploy is safe.
+  `vercel-build` runs `prisma generate`, `prisma migrate deploy`, then
+  `npm run db:seed`, then `next build`. The seed is idempotent, so
+  re-running it on every deploy is safe. The `prisma generate` step
+  matters: the repo has no postinstall hook, so a fresh Vercel install
+  has no generated client until generate runs (the first deploy failed
+  on the seed for exactly this reason).
 - Added a small "Run worker" button to the admin page. It POSTs to the
   existing admin-only `/api/worker/run` route and shows the result
   inline. It is only a demo affordance for the live link, where no
