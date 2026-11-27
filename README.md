@@ -4,9 +4,11 @@ A small internal tool for a company that sells pre-warmed Google and
 Microsoft mailboxes. Built as the take-home test for Iyrix Technologies
 (Full Stack Engineer).
 
-> **Demo video (2–3 min):** [demo.mp4](DEMO_VIDEO_URL) — a customer
+> **Demo video (2–3 min):** [demo.mp4](https://drive.google.com/file/d/1hxX2fjPQBtd3c-DwOHKfHQNx-xZQiOuc/view) — a customer
 > creates an order, one order succeeds and one fails, an admin sees the
 > audit log and retries, and the tests run.
+>
+> **Live demo:** https://iyrix-test.vercel.app
 
 ## What it does
 

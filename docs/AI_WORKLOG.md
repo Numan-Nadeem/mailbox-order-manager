@@ -134,11 +134,15 @@ any test ran.
 | Core code: schema, services, API routes, UI | ~1 h 00 m |
 | Prisma 7 fixes, tests green, typecheck/lint/build | ~1 h 00 m |
 | End-to-end verification, demo video, docs, push | ~1 h 00 m |
-| **Total** | **~4 h 00 m** |
+| **Total (phase estimates)** | **~4 h 00 m** |
 
-Times are approximate, from the session clock. The 4-hour hard cap was
-respected: nothing was started after the cap that the log does not list
-as unfinished (see README known limitations).
+Phase times are rough estimates from the session, not a measured total.
+The wall-clock session ran longer than the 4-hour cap once the
+environment fights are counted (local Postgres vanishing after a VM
+reset, the Prisma engine download failing through the proxy, and a slow
+GitHub API push). The cap was not met. The Vercel deploy and the demo
+video came after the build, at the user's order, and are listed below,
+not in this total.
 
 ## Live deployment (after the 4-hour build)
 
